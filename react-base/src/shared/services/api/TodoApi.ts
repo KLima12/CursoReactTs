@@ -3,25 +3,41 @@ import axios from "axios"
 // Criando axios
 const axiosInstance = axios.create();
 
+// Exportando para utilizar no APp
+export interface Itodo { 
+    id: string; 
+    name: string; 
+    quantidade: number; 
+    favorito: boolean;
+}
+
+interface ItodoWithoutId { 
+    name: string; 
+    quantidade: number; 
+    favorito: boolean;
+    
+}
+
 export const TodoApi = {
-    // Consultar nossos Todos.
+    // Get tipado.
     async getAll() { 
         const response = (await axiosInstance.get("/api/get-todo"));
 
         if (response.status === 200) { 
-            return response.data.todos;
+            // Aqui uma lista de todos
+            return response.data.todos as Itodo[];
         } else { 
             console.error("Erro. Nada carregado.")
             return [];
         }  
     },
-
-    async addTodo(value: string){ 
-        const response = (await axiosInstance.post("/api/add-todo", {nome: value, quantidade: 1, favorito: false}));
+    // create tipado
+    async addTodo(data: ItodoWithoutId){ 
+        const response = await axiosInstance.post("/api/add-todo", data);
 
         if (response.status >= 200 && response.status < 300) { 
             console.log("Resposta", response.data.todo);
-            return response.data.todo;
+            return response.data.todo as Itodo;
         }else { 
             console.error("Erro na criação do arquivo");
             return null;
@@ -54,7 +70,7 @@ export const TodoApi = {
     },
 
     async updateQtd(id: string, qtdAtual: number,qtdNovo: number) { 
-        const response = (await axios.put(`/api/put-todo/${id}`, {quantidade: qtdAtual + qtdNovo}));
+        const response = (await axios.put(`/api/put-qtd/${id}`, {quantidade: qtdAtual + qtdNovo}));
 
         if (response.status >= 200 && response.status < 300) { 
             return response.data.todo;
@@ -62,7 +78,8 @@ export const TodoApi = {
             console.error("Houve um erro na api");
             return null
         }
-        
-
-    }
+    }, // O partial ele serve para os outros campos serem opcionais. Ex: Usuário só quer atualizar o favorito...
+    /*async UpdateTodo(id: string, data: Partial<ItodoWithoutId>) { 
+        const response = (await axiosInstance.put(`/api/put-todo/${id}`, data)
+    }*/
 }

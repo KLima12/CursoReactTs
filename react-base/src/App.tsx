@@ -3,19 +3,12 @@ import "./App.css";
 import { InputAdd } from "./components/InputAdd";
 import { TodoItem } from "./components/TodoItem";
 import { List } from "./components/List";
-import { TodoApi } from "./shared/services/api/TodoApi";
-
-// Criando interface para TS entender oque terá na lista;
-interface Todo {
-  id: string;
-  nome: string;
-  quantidade: number;
-  favorito: boolean;
-}
+import { TodoApi, type Itodo } from "./shared/services/api/TodoApi";
 
 export function App() {
   // Aqui eu uso a inferface Todo;
-  const [lista, setLista] = useState<Todo[]>([]);
+  // Pegando export da interface do TodoAPi
+  const [lista, setLista] = useState<Itodo[]>([]);
 
   // Busca os dados da api quando o componente inicia
   useEffect(() => {
@@ -29,15 +22,13 @@ export function App() {
   }, []);
 
   const handleAdd = async (value: string) => {
-    const response = await TodoApi.addTodo(value);
-
-    // Garantindo que a resposta não é nula e tem o id gerado pela api
-    if (response && response.id) {
-      setLista([...lista, response]);
-    } else {
-      console.error("Erro na criação do arquivo.");
-      return null;
-    }
+    TodoApi.addTodo({ name: value, quantidade: 1, favorito: false }).then(
+      (data) => {
+        if (data) {
+          setLista([...lista, data]);
+        }
+      },
+    );
   };
 
   const handleRemove = async (idLista: string) => {
@@ -119,7 +110,7 @@ export function App() {
         {lista.map((list) => (
           <TodoItem
             key={list.id}
-            nome={list.nome}
+            nome={list.name}
             favorito={list.favorito}
             quantidade={list.quantidade}
             onRemove={() => handleRemove(list.id)}

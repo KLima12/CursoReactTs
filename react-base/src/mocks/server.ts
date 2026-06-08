@@ -9,9 +9,15 @@ createServer({
     }, 
 
     seeds(server) { 
-        server.create("todo", { id: "1", nome: "Tênis Nike", quantidade: 1, favorito: false });
-        server.create("todo", { id: "2", nome: "Bermuda Nike", quantidade: 2, favorito: false });
-        server.create("todo", { id: "3", nome: "Bermuda Adidas", quantidade: 1, favorito: false });
+        // Consultando dados no localStorage
+        const todosAsString = localStorage.getItem('MOCK_TODOS')
+        if (todosAsString === null) return; 
+
+        // Transformando eles em objetos.
+        const todos = JSON.parse(todosAsString);
+        
+        // Para cada item vamos criar ele dentro do nosso server.
+        todos.models.forEach((todo: {}) => server.schema.create('todo', todo));
     },
 
     routes() { 
@@ -24,26 +30,38 @@ createServer({
 
         this.post("/add-todo", (schema, request) => { 
             const data = JSON.parse(request.requestBody);
-            return schema.create("todo", data);
+            
+            // Toda vez que eu crio um todo novo.
+            const todo = schema.create("todo", data); 
+            
+            // Eu pego meu todo.
+            const todos = schema.all('todo'); 
+            // Atualizo meu banco
+            localStorage.setItem('MOCK_TODOS', JSON.stringify(todos));
+            
+            return todo;
         })
 
         this.delete("/delete-todo/:id", (schema, request) => {
             let id = request.params.id; // Captura o id vindo da url;
             schema.find("todo", id)?.destroy();
 
+            const todos = schema.all('todo'); 
+            localStorage.setItem("MOCK_TODOS", JSON.stringify(todos));
             return new Response(204);
         })
 
         this.put("/put-favorite/:id", (schema, request) => { 
             let id = request.params.id;
-            console.log(`Id chegou ${id}`);
             const todo = schema.find("todo", id);
 
             if (todo) { 
                 const data = JSON.parse(request.requestBody);
-                console.log("Data", data);
                 todo.update(data); 
-
+                
+                const todos = schema.all('todo'); 
+                
+                localStorage.setItem('MOCK_TODOS', JSON.stringify(todos));
                 return todo
             }
             
@@ -56,7 +74,11 @@ createServer({
 
             if (todo) { 
                 const data = JSON.parse(request.requestBody); 
-                todo.update(data); 
+                todo.update(data);
+                
+                const todos = schema.all('todo'); 
+                
+                localStorage.setItem('MOCK_TODOS', JSON.stringify(todos));
                 return todo
             }
             return new Response(404, {}, {error: "Todo não encontrado"});
