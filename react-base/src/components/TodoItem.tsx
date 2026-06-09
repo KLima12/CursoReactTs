@@ -18,7 +18,8 @@ export const TodoItem = ({
     <li>
       <span>{nome}</span>
       <span> qtd: {quantidade}</span>
-      <span> favorito: {favorito ? "Sim" : "Não"}</span>
+      {favorito && <span> favorito: Sim</span>}
+
       <button onClick={onRemove}>Remover</button>
       <button onClick={() => onFavorite()}>Favoritar</button>
       <button onClick={() => onQuantidade(1)}>+</button>

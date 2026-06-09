@@ -1,0 +1,21 @@
+* { 
+    margin: 0;
+}
+.layout-base { 
+    background-color: lightgray;
+}
+
+.layout-header {
+    margin: 0; 
+    background-color: rgb(37, 175, 37);
+    color: white;
+    height: 40px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.layout-divider { 
+    border-color: rgb(26, 1, 1);
+}

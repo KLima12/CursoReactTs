@@ -36,7 +36,6 @@ export const TodoApi = {
         const response = await axiosInstance.post("/api/add-todo", data);
 
         if (response.status >= 200 && response.status < 300) { 
-            console.log("Resposta", response.data.todo);
             return response.data.todo as Itodo;
         }else { 
             console.error("Erro na criação do arquivo");
