@@ -94,7 +94,6 @@ export const Home = () => {
   };
   return (
     <PageLayout title="Página inicial">
-      <h1>Adicionar mais valores: </h1>
       <InputAdd onAdd={handleAdd} />
       <List>
         {lista.map((list) => (

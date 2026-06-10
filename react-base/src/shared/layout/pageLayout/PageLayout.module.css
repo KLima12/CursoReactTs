@@ -1,3 +1,13 @@
 .PageLayoutContainer { 
-    background-color: black;
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+}
+
+.PageContent { 
+    max-width: 800px;
+}
+
+.PageTitle { 
+    margin: 0;
 }
