@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { TodoApi, type Itodo } from "../shared/services/api/TodoApi";
 import { InputAdd } from "../components/InputAdd";
-import { List } from "../components/List";
 import { TodoItem } from "../components/TodoItem";
 import { PageLayout } from "../shared/layout/pageLayout/PageLayout";
-
+import TodoItemLayoutStyle from "../shared/layout/TodoItemLayout/TodoItemLayout.module.css";
 export const Home = () => {
   const [lista, setLista] = useState<Itodo[]>([]);
 
@@ -45,16 +44,6 @@ export const Home = () => {
     if (!itemAtual) return;
 
     const favoritoAtual = itemAtual?.favorito;
-    // Segurança, se não achar o item, para aqui
-
-    /*const response = await fetch(`api/put-todo/${idFav}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // Se era false, vira true.
-        body: JSON.stringify({ favorito: !itemAtual.favorito }), 
-      });*/
 
     const response = await TodoApi.updateFavorite(idFav, favoritoAtual);
 
@@ -93,12 +82,13 @@ export const Home = () => {
     }
   };
   return (
+    /*Estilização somente para a página*/
     <PageLayout title="Página inicial">
       <InputAdd onAdd={handleAdd} />
-      <List>
+      <ol className={TodoItemLayoutStyle.DivLista}>
         {lista.map((list) => (
           <TodoItem
-            key={list.id}
+            id={list.id}
             nome={list.name}
             favorito={list.favorito}
             quantidade={list.quantidade}
@@ -108,7 +98,7 @@ export const Home = () => {
             onQuantidade={(delta) => handleQuantidade(list.id, delta)}
           />
         ))}
-      </List>
+      </ol>
     </PageLayout>
   );
 };

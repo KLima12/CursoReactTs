@@ -1,8 +1,24 @@
-* { 
+html, body, #root {
+    height: 100%;
     margin: 0;
 }
+
+
 .layout-base { 
-    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color:rgb(230, 230, 230);
+}
+
+.layout-links { 
+    padding: 10px;
+    cursor: pointer;
+}
+
+.layout-links:hover { 
+    background-color: white;
+    color: black;
 }
 
 .layout-header {
@@ -16,6 +32,3 @@
     gap: 15px;
 }
 
-.layout-divider { 
-    border-color: rgb(26, 1, 1);
-}

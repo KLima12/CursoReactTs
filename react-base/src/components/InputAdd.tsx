@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import { InputAddLayout } from "../shared/layout/inputAddLayout/InputAddLayout";
+import InputAddLayoutStyles from "../shared/layout/inputAddLayout/InputAddLayout.module.css";
 interface InputProps {
   onAdd(value: string): void;
 }
@@ -11,10 +12,16 @@ export const InputAdd = ({ onAdd }: InputProps) => {
     setValue("");
   };
   return (
-    <div>
-      <input value={value} onChange={(e) => setValue(e.target.value)} />
+    <InputAddLayout>
+      <input
+        className={InputAddLayoutStyles.input}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
 
-      <button onClick={addValue}>Enviar</button>
-    </div>
+      <button className={InputAddLayoutStyles.enviar} onClick={addValue}>
+        Enviar
+      </button>
+    </InputAddLayout>
   );
 };

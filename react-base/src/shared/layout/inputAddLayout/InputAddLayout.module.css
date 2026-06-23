@@ -1,0 +1,18 @@
+.InputEnviar { 
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+.input { 
+    width: 50%;
+    padding: 5px;
+    margin-left: 7px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.enviar { 
+    border-radius: 5px;
+    cursor: pointer;
+}

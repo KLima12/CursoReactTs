@@ -1,0 +1,13 @@
+.todoBase { 
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+}
+
+.DivLista { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+   
+}

@@ -8,9 +8,9 @@ export const PageLayout = ({ children, title }: IPageLayoutProps) => {
     <div className={PageLayoutStyles.PageLayoutContainer}>
       <div className={PageLayoutStyles.PageContent}>
         <div>
-          <h1 className={PageLayoutStyles.PageTitle}>{title}</h1>
+          <h2 className={PageLayoutStyles.PageTitle}>{title}</h2>
         </div>
-        <div>{children}</div>
+        <div className={PageLayoutStyles.PageChildren}>{children}</div>
       </div>
     </div>
   );

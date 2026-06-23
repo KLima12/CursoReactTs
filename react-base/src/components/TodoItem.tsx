@@ -1,4 +1,7 @@
+import { Link } from "react-router";
+import { TodoItemLayout } from "../shared/layout/TodoItemLayout/TodoItemLayout";
 interface TodoItemProps {
+  id: string;
   nome: string;
   quantidade: number;
   favorito: boolean;
@@ -6,24 +9,14 @@ interface TodoItemProps {
   onFavorite(): void;
   onQuantidade(value: number): void;
 }
-export const TodoItem = ({
-  nome,
-  quantidade,
-  favorito,
-  onRemove,
-  onFavorite,
-  onQuantidade,
-}: TodoItemProps) => {
+export const TodoItem = ({ nome, id, onRemove }: TodoItemProps) => {
   return (
-    <li>
-      <span>{nome}</span>
-      <span> qtd: {quantidade}</span>
-      {favorito && <span> favorito: Sim</span>}
+    <li key={id}>
+      <TodoItemLayout>
+        <Link to={`/detalhe/${id}`}>{nome}</Link>
 
-      <button onClick={onRemove}>Remover</button>
-      <button onClick={() => onFavorite()}>Favoritar</button>
-      <button onClick={() => onQuantidade(1)}>+</button>
-      <button onClick={() => onQuantidade(-1)}>-</button>
+        <button onClick={onRemove}>Remover</button>
+      </TodoItemLayout>
     </li>
   );
 };
