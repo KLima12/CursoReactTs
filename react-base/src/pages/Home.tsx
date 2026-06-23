@@ -83,7 +83,7 @@ export const Home = () => {
   };
   return (
     /*Estilização somente para a página*/
-    <PageLayout title="Página inicial">
+    <PageLayout title="TodoList">
       <InputAdd onAdd={handleAdd} />
       <ol className={TodoItemLayoutStyle.DivLista}>
         {lista.map((list) => (
