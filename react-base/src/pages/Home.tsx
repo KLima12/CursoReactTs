@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TodoApi, type Itodo } from "../shared/services/api/TodoApi";
 import { InputAdd } from "../components/InputAdd";
-import { TodoItem } from "../components/TodoItem";
+import { TodoItem } from "../components/TodoItem/TodoItem";
 import { PageLayout } from "../shared/layout/pageLayout/PageLayout";
 import TodoItemLayoutStyle from "../shared/layout/TodoItemLayout/TodoItemLayout.module.css";
 export const Home = () => {

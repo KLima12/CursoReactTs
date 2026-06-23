@@ -1,0 +1,12 @@
+.List { 
+    border: 1px solid red;
+    justify-content: center;
+    text-align: center;
+}
+.BtnRemove { 
+    background-color: green;
+    padding: 5px;
+    cursor: pointer;
+    color: white;
+    border: 1px solid white;
+}
