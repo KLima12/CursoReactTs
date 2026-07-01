@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
 
 // Criando interface para dizer oque vamos armazenar
 interface IAuthContextProps {
@@ -15,19 +15,43 @@ const AuthContext = createContext({} as IAuthContextProps);
 export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [email, setEmail] = useState<string>();
   const [accessToken, setAcessToken] = useState<string>();
-  const login = (email: string) => {
+
+  const login = useCallback(async (email: string, password: string) => {
     // Aqui seria chamar o backend para conseguir o token de autenticação, mas nao tem backend....
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
 
-    setEmail(email);
-    // Aqui gera uma string aleatoria
-    setAcessToken(crypto.randomUUID());
-  };
+      if (!response.ok) {
+        throw new Error("Erro ao fazer login");
+      }
 
-  const logout = () => {
+      const data = await response.json();
+
+      setEmail(email);
+      setAcessToken(data.access);
+
+      localStorage.setItem("access", data.access);
+      localStorage.setItem("refresh", data.refresh);
+    } catch (error) {
+      console.error("Erro no login", error);
+    }
+  }, []);
+
+  const logout = useCallback(() => {
     // Aqui passamos underfined no logout
     setEmail(undefined);
     setAcessToken(undefined);
-  };
+  }, []);
+
   return (
     <AuthContext.Provider value={{ login, logout, accessToken, email }}>
       {children}

@@ -10,7 +10,6 @@ export function Login() {
 
   const handleLogin = () => {
     console.log(email, password);
-    // O método de login vai logar a gente.
 
     login(email, password);
   };
