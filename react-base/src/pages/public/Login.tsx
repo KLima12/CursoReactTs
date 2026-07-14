@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import LoginStyles from "./Login.module.css";
 import { useAuthContext } from "../../shared/contexts/AuthContext";
 export function Login() {
@@ -8,23 +8,22 @@ export function Login() {
   // Extrai o método de login
   const { login } = useAuthContext();
 
-  const handleLogin = () => {
-    console.log(email, password);
-
-    login(email, password);
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await login(email, password);
   };
 
   return (
     <div className={LoginStyles.PageContainer}>
-      <div className={LoginStyles.PageContent}>
-        <h1>Login</h1>
+      <h1>Login</h1>
 
+      <form className={LoginStyles.PageContent} onSubmit={handleLogin}>
         <b className={LoginStyles.Label}>Email</b>
-
         <input
           value={email}
           className={LoginStyles.Input}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <b className={LoginStyles.Label}>Senha</b>
@@ -34,12 +33,13 @@ export function Login() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
-        <button className={LoginStyles.BtnEntrar} onClick={handleLogin}>
+        <button className={LoginStyles.BtnEntrar} type="submit">
           Entrar
         </button>
-      </div>
+      </form>
     </div>
   );
 }

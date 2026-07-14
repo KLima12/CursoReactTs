@@ -1,5 +1,12 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
-
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { api } from "../api/api";
+import { authService } from "../auth/authService";
 // Criando interface para dizer oque vamos armazenar
 interface IAuthContextProps {
   email: string | undefined;
@@ -7,6 +14,7 @@ interface IAuthContextProps {
 
   login(email: string, password: string): void;
   logout(): void;
+  loading: boolean;
 }
 
 // Criando contexto e falando que o contexto é um contexto do IAuthContextProps
@@ -15,32 +23,33 @@ const AuthContext = createContext({} as IAuthContextProps);
 export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [email, setEmail] = useState<string>();
   const [accessToken, setAcessToken] = useState<string>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = authService.getAccessToken();
+
+    if (token) {
+      setAcessToken(token);
+    }
+    setLoading(false);
+  }, []);
 
   const login = useCallback(async (email: string, password: string) => {
     // Aqui seria chamar o backend para conseguir o token de autenticação, mas nao tem backend....
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/login/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+      const response = await api.post("/api/login/", {
+        email,
+        password,
       });
 
-      if (!response.ok) {
-        throw new Error("Erro ao fazer login");
-      }
-
-      const data = await response.json();
+      const data = response.data;
 
       setEmail(email);
-      setAcessToken(data.access);
 
-      localStorage.setItem("access", data.access);
-      localStorage.setItem("refresh", data.refresh);
+      // Para salvar no navegador
+      authService.setTokens(data.access, data.refresh);
+
+      setAcessToken(data.access);
     } catch (error) {
       console.error("Erro no login", error);
     }
@@ -53,7 +62,9 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ login, logout, accessToken, email }}>
+    <AuthContext.Provider
+      value={{ login, logout, accessToken, email, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -67,6 +78,5 @@ export const useAuthContext = () => {
 // Verificar se está autenticado ou não!
 export const useIsAuthenticated = () => {
   const { accessToken } = useAuthContext();
-  console.log("Autenticado");
   return !!accessToken;
 };

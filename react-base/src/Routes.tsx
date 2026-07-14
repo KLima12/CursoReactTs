@@ -4,9 +4,13 @@ import { AppLayout } from "./shared/layout/AppLayout";
 import { About } from "./pages/About";
 import { Detail } from "./pages/Detail";
 import { Login } from "./pages/public/Login";
-import { useIsAuthenticated } from "./shared/contexts/AuthContext";
+import { useAuthContext, useIsAuthenticated } from "./shared/contexts/AuthContext";
 export const AppRoutes = () => {
   const isAuthenticated = useIsAuthenticated();
+  const {loading} = useAuthContext(); 
+  if (loading) { 
+    return <div>Carregando...</div>
+  }
   return (
     <BrowserRouter>
       {isAuthenticated && (
