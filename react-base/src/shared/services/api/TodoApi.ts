@@ -1,9 +1,5 @@
-import axios from "axios"
+import { api } from "../../api/api";
 
-// Criando axios
-const axiosInstance = axios.create();
-
-// Exportando para utilizar no APp
 export interface Itodo { 
     id: string; 
     name: string; 
@@ -18,67 +14,84 @@ interface ItodoWithoutId {
     
 }
 
-export const TodoApi = {
-    // Get tipado.
+export const TodoApi = { 
     async getAll() { 
-        const response = (await axiosInstance.get("/api/get-todo"));
+        try { 
+            const response = api.get("/api/tasks/");
 
-        if (response.status === 200) { 
-            // Aqui uma lista de todos
-            return response.data.todos as Itodo[];
-        } else { 
-            console.error("Erro. Nada carregado.")
-            return [];
-        }  
-    },
-    // create tipado
-    async addTodo(data: ItodoWithoutId){ 
-        const response = await axiosInstance.post("/api/add-todo", data);
-
-        if (response.status >= 200 && response.status < 300) { 
-            return response.data.todo as Itodo;
-        }else { 
-            console.error("Erro na criação do arquivo");
-            return null;
+            const data = (await response).data;
+            console.log(data); 
+            return data as Itodo;
+        } catch(error) { 
+            console.error("Erro: ", error)
         }
-    },
+    }, 
 
-    async removeTodo(id: string) { 
-        const response = (await axiosInstance.delete(`/api/delete-todo/${id}`));
+    async addTodo(task: ItodoWithoutId) { 
+        try {
+            const response = api.post("/api/tasks", { 
+                task
+            }); 
+            
+            if ((await response).status === 200) { 
+                const data = (await response).data;
+                console.log(data);
+                return data
+            }                
+        } catch(error) { 
+            alert(`Error: ${error}`);
+            console.log("Error: ", error);
+        }
+    }, 
 
-        if (response.status === 204) { 
-            console.log("Item removido com sucesso!"); 
-            return true;
-        } else { 
-            console.error("Houve um erro e o item não foi removido!");
-            return false;
+    async deleteTodo(id: string) { 
+        try { 
+            const response = api.delete(`/api/tasks/${id}`); 
+
+            if ((await response).status === 204) { 
+                return response;
+            }
+        }catch(error) { 
+            alert(`Houve um problema ao remover: ${error}`); 
+            console.log("Error: ", error);
         }
     }, 
 
     async updateFavorite(id: string, favoritoAtual: boolean) { 
-        const response  = (await axiosInstance.put(`/api/put-favorite/${id}`, {favorito: !favoritoAtual}))
-        
-        if (response.status >= 200 && response.status < 300) { 
-            console.log("Produto clicado");
-            return response.data.todo;
-        } else { 
-            console.error("Erro ao favoritar o produto");
-            return null;
+        try { 
+            const response = api.put(`/api/tasks/${id}`, { 
+                favoritoAtual
+            })
+
+            if ((await response).status === 200) { 
+                const data = (await response).data; 
+                return data;
+            }
+        } catch(error) { 
+            alert(`Houve um erro ao atualizar: ${error}`); 
+            console.log("Error: ", error);
         }
+    }, 
 
-    },
+    async updateQtd(id: string, value: number) { 
+        try { 
+            const response = api.put(`/api/tasks/${id}`, { 
+                value
+            }); 
 
-    async updateQtd(id: string, qtdAtual: number,qtdNovo: number) { 
-        const response = (await axios.put(`/api/put-qtd/${id}`, {quantidade: qtdAtual + qtdNovo}));
+            if ((await response).status === 200) { 
+                const data = (await response).data; 
 
-        if (response.status >= 200 && response.status < 300) { 
-            return response.data.todo;
-        }else { 
-            console.error("Houve um erro na api");
-            return null
+                return data;
+            }
+        } catch(error) { 
+            alert(`Houve um problema ao atualizar: ${error}`); 
+            console.log("Error: ", error);
         }
-    }, // O partial ele serve para os outros campos serem opcionais. Ex: Usuário só quer atualizar o favorito...
-    /*async UpdateTodo(id: string, data: Partial<ItodoWithoutId>) { 
-        const response = (await axiosInstance.put(`/api/put-todo/${id}`, data)
-    }*/
+    }
+
 }
+
+
+
+

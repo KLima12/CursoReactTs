@@ -29,7 +29,7 @@ export const Home = () => {
   };
 
   const handleRemove = async (idLista: string) => {
-    const response = await TodoApi.removeTodo(idLista);
+    const response = await TodoApi.deleteTodo(idLista);
 
     if (response) {
       setLista(lista.filter((list) => list.id !== idLista));
@@ -65,7 +65,6 @@ export const Home = () => {
 
     const response = await TodoApi.updateQtd(
       idQtd,
-      itemAtual.quantidade,
       value,
     );
 
