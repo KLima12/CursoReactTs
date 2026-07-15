@@ -10,3 +10,27 @@
     color: white;
     border: 1px solid white;
 }
+
+.btnFavorite { 
+    cursor: pointer;
+    background-color: white;
+    padding: 5px;
+    color: white;
+}
+
+.star { 
+    cursor: pointer;
+    color: yellow;
+    transition: all 0.2s ease;
+}
+
+.star:hover {
+  color: red;
+  transform: scale(1.1);
+}
+
+
+.star:active {
+  color: red;
+  transform: scale(0.9);
+}

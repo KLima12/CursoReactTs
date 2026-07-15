@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
       setAcessToken(data.access);
     } catch (error) {
+      alert("Credenciais invalidas!")
       console.error("Erro no login", error);
     }
   }, []);

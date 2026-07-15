@@ -17,9 +17,9 @@ export const AppLayout = ({ children }: React.PropsWithChildren) => {
         <NavLink to="/sobre">
           <a className="layout-links">Sobre</a>
         </NavLink>
-        <a className="layout-links" onClick={logout}>
+        <button className="" onClick={logout}>
           Sair
-        </a>
+        </button>
       </div>
       <hr className="layout-divider" />
 

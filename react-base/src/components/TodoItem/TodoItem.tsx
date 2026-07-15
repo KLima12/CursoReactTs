@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { TodoItemLayout } from "../../shared/layout/TodoItemLayout/TodoItemLayout";
 import TodoItemStyles from "./TodoItem.module.css";
+import { BsStarFill } from "react-icons/bs";
 interface TodoItemProps {
   id: string;
   nome: string;
@@ -10,7 +11,7 @@ interface TodoItemProps {
   onFavorite(): void;
   onQuantidade(value: number): void;
 }
-export const TodoItem = ({ nome, id, onRemove }: TodoItemProps) => {
+export const TodoItem = ({ nome, id, onRemove, onFavorite }: TodoItemProps) => {
   return (
     <li className={TodoItemStyles.List} key={id}>
       <TodoItemLayout>
@@ -19,6 +20,11 @@ export const TodoItem = ({ nome, id, onRemove }: TodoItemProps) => {
         <button className={TodoItemStyles.BtnRemove} onClick={onRemove}>
           Remover
         </button>
+        
+        
+        <BsStarFill onClick={onFavorite} className={TodoItemStyles.star}
+         />
+
       </TodoItemLayout>
     </li>
   );

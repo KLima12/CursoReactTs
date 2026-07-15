@@ -19,10 +19,10 @@ export const Home = () => {
   }, []);
 
   const handleAdd = async (value: string) => {
-    TodoApi.addTodo({ name: value, quantidade: 1, favorito: false }).then(
+    TodoApi.addTodo({ nome: value, quantidade: 1, favorito: false }).then(
       (data) => {
         if (data) {
-          setLista([...lista, data]);
+          setLista((prev) => [...prev, data]);
         }
       },
     );
@@ -88,7 +88,7 @@ export const Home = () => {
         {lista.map((list) => (
           <TodoItem
             id={list.id}
-            nome={list.name}
+            nome={list.nome}
             favorito={list.favorito}
             quantidade={list.quantidade}
             onRemove={() => handleRemove(list.id)}
