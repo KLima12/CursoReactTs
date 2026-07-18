@@ -15,6 +15,7 @@ interface IAuthContextProps {
   login(email: string, password: string): void;
   logout(): void;
   loading: boolean;
+  refreshToken(): Promise<boolean>;
 }
 
 // Criando contexto e falando que o contexto é um contexto do IAuthContextProps
@@ -22,17 +23,59 @@ const AuthContext = createContext({} as IAuthContextProps);
 
 export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [email, setEmail] = useState<string>();
-  const [accessToken, setAcessToken] = useState<string>();
+  const [accessToken, setAcessToken] = useState<string | undefined>();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = authService.getAccessToken();
+  const refreshToken = useCallback(async(): Promise<boolean> => { 
+    try { 
+      // Pegando refresh token
+      const refresh = await authService.getRefreshToken();
+      if (!refresh) return false;
 
-    if (token) {
-      setAcessToken(token);
+      // Requisição para pegar novo acess token
+      const response = await api.post("api/refresh/", { 
+        refresh: refresh
+      });
+
+      // Armazenando novo access token
+      const newAcessToken = response.data.access;
+      // Atualizando pro novo access token 
+      authService.setTokens(newAcessToken, refresh);
+      // Atualizando estado
+      setAcessToken(newAcessToken);
+      return true;
+    }catch(error) { 
+      console.log("Erro ao renovar token: ", error); 
+      return false;
     }
-    setLoading(false);
+    },[]) 
+
+
+  // Verificar autenticação ao carregar
+  useEffect(() => {
+    const initializeAuth = async () => { 
+      // Lá no getAcessToken retorna ou str ou null, então convertemos para underfined para ficar no padrão certo.
+      const token = authService.getAccessToken() ?? undefined;
+      try { 
+        await api.get("api/verify-token/", { 
+          headers: {Authorization: `Bearer ${token}`}
+        });
+        setAcessToken(token);
+      } catch(error) { 
+        // Token inválido, tenta renovar;
+        const refreshed = await refreshToken();
+        if (!refreshed) { 
+          authService.logout();
+          setAcessToken(undefined);
+        }
+      } finally { 
+        setLoading(false);
+      }
+    }
+    
+    initializeAuth();
   }, []);
+
 
   const login = useCallback(async (email: string, password: string) => {
     // Aqui seria chamar o backend para conseguir o token de autenticação, mas nao tem backend....
@@ -53,18 +96,20 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     } catch (error) {
       alert("Credenciais invalidas!")
       console.error("Erro no login", error);
+      throw error;
     }
   }, []);
 
   const logout = useCallback(() => {
-    // Aqui passamos underfined no logout
+    authService.logout()
     setEmail(undefined);
     setAcessToken(undefined);
+    window.location.href = '/login';
   }, []);
 
   return (
     <AuthContext.Provider
-      value={{ login, logout, accessToken, email, loading }}
+      value={{ login, logout, accessToken, email, loading, refreshToken }}
     >
       {children}
     </AuthContext.Provider>
