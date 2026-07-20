@@ -20,6 +20,10 @@
 
 .star { 
     cursor: pointer;
+}
+
+.starNotFavorite { 
+    cursor: pointer;
     color: yellow;
     transition: all 0.2s ease;
 }
@@ -29,8 +33,8 @@
   transform: scale(1.1);
 }
 
-
-.star:active {
-  color: red;
-  transform: scale(0.9);
+.startFavorite { 
+    cursor: pointer;
+    color: red;
+    transition: all 0.2s ease;
 }

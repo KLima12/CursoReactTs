@@ -11,7 +11,7 @@ interface TodoItemProps {
   onFavorite(): void;
   onQuantidade(value: number): void;
 }
-export const TodoItem = ({ nome, id, onRemove, onFavorite }: TodoItemProps) => {
+export const TodoItem = ({ nome, id, onRemove, onFavorite, favorito }: TodoItemProps) => {
   return (
     <li className={TodoItemStyles.List} key={id}>
       <TodoItemLayout>
@@ -22,7 +22,10 @@ export const TodoItem = ({ nome, id, onRemove, onFavorite }: TodoItemProps) => {
         </button>
         
         
-        <BsStarFill onClick={onFavorite} className={TodoItemStyles.star}
+        <BsStarFill onClick={onFavorite} className={`
+            ${TodoItemStyles.star} 
+            ${favorito ? TodoItemStyles.starFavorite : TodoItemStyles.starNotFavorite}
+          `}
          />
 
       </TodoItemLayout>

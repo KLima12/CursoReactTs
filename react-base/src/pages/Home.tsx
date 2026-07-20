@@ -43,8 +43,9 @@ export const Home = () => {
     const itemAtual = lista.find((list) => list.id === idFav);
     if (!itemAtual) return;
 
-    const favoritoAtual = itemAtual?.favorito;
-
+    console.log("item atual: ", itemAtual);
+    const favoritoAtual = !itemAtual?.favorito;
+    console.log("favoritoAtual: ", favoritoAtual);
     const response = await TodoApi.updateFavorite(idFav, favoritoAtual);
 
     if (response && response.id) {
