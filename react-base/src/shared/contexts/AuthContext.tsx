@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
       if (!refresh) return false;
 
       // Requisição para pegar novo acess token
-      const response = await api.post("api/refresh/", { 
+      const response = await api.post("/api/token/refresh/", { 
         refresh: refresh
       });
 
@@ -56,16 +56,26 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     const initializeAuth = async () => { 
       // Lá no getAcessToken retorna ou str ou null, então convertemos para underfined para ficar no padrão certo.
       const token = authService.getAccessToken() ?? undefined;
+
+      // Se não tem token, já saio do loading
+      if (!token) { 
+        setLoading(false);
+        return;
+      }
       try { 
-        await api.get("api/verify-token/", { 
-          headers: {Authorization: `Bearer ${token}`}
+        await api.post("/api/token/verify/", { 
+          token: token
         });
+        console.log("Token: ", token);
         setAcessToken(token);
       } catch(error) { 
-        // Token inválido, tenta renovar;
+        console.log("Ocorreu um erro ao chamar função de verificar token");
+        // Token inválido, tenta renovar. Chamo a função.
         const refreshed = await refreshToken();
         if (!refreshed) { 
+          // Usuário deslogado.
           authService.logout();
+          // Definindo como urderfined.
           setAcessToken(undefined);
         }
       } finally { 
@@ -78,13 +88,14 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
 
   const login = useCallback(async (email: string, password: string) => {
-    // Aqui seria chamar o backend para conseguir o token de autenticação, mas nao tem backend....
     try {
+      console.log("Fazendo requisição login");
       const response = await api.post("/api/login/", {
         email,
         password,
       });
 
+      
       const data = response.data;
 
       setEmail(email);

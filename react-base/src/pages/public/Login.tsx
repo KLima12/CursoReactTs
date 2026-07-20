@@ -10,7 +10,12 @@ export function Login() {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await login(email, password);
+    try { 
+      await login(email, password);
+    } catch (error){ 
+      console.log("Erro no login: ", error);
+    }
+    
   };
 
   return (

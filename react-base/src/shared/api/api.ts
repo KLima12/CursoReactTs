@@ -23,6 +23,9 @@ api.interceptors.response.use(
     async (error) => { 
         const originalRequest = error.config;
         
+        if (originalRequest.url === '/api/login/') { 
+            return Promise.reject(error);
+        }
         // Se for erro 401 e NÃO for uma tentativa de refresh
         if (error.response?.status === 401 && !originalRequest._retry) { 
             originalRequest._retry = true;
@@ -50,7 +53,6 @@ api.interceptors.response.use(
             } catch (refreshError) { 
                 // 🔹 Se falhou ao renovar, faz logout
                 authService.logout(); 
-                window.location.href = '/login'; 
                 return Promise.reject(refreshError);
             }
         }
