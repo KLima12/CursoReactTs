@@ -58,8 +58,9 @@ export const TodoApi = {
 
     async updateFavorite(id: string, favoritoAtual: boolean) { 
         try { 
+            console.log("Favorito que vem: ", favoritoAtual);
             const response = api.patch(`/api/tasks/${id}/`, { 
-                favorito: !favoritoAtual
+                favorito: favoritoAtual
             })
 
             if ((await response).status === 200) { 
@@ -72,22 +73,7 @@ export const TodoApi = {
         }
     }, 
 
-    async updateQtd(id: string, value: number) { 
-        try { 
-            const response = api.put(`/api/tasks/${id}`, { 
-                value
-            }); 
-
-            if ((await response).status === 200) { 
-                const data = (await response).data; 
-
-                return data;
-            }
-        } catch(error) { 
-            alert(`Houve um problema ao atualizar: ${error}`); 
-            console.log("Error: ", error);
-        }
-    }
+  
 
 }
 

@@ -66,7 +66,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
         await api.post("/api/token/verify/", { 
           token: token
         });
-        console.log("Token: ", token);
         setAcessToken(token);
       } catch(error) { 
         console.log("Ocorreu um erro ao chamar função de verificar token");

@@ -26,14 +26,6 @@ h1 {
     text-align: center;
 }
 
-.Label { 
-    text-align: center;
-}
-
-.Input { 
-    height: 25px;
-}
-
 .BtnEntrar { 
     background-color: green;
     color: white;

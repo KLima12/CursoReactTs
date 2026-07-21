@@ -43,12 +43,14 @@ export const Home = () => {
     const itemAtual = lista.find((list) => list.id === idFav);
     if (!itemAtual) return;
 
-    console.log("item atual: ", itemAtual);
+    // Retorna underfined em vez de dar erro
     const favoritoAtual = !itemAtual?.favorito;
-    console.log("favoritoAtual: ", favoritoAtual);
     const response = await TodoApi.updateFavorite(idFav, favoritoAtual);
 
+    console.log(response);
+
     if (response && response.id) {
+      console.log("Resposta valida! Vamos atualizar!")
       setLista(
         lista.map((fav) =>
           fav.id === idFav ? { ...fav, favorito: !fav.favorito } : fav,
@@ -59,28 +61,6 @@ export const Home = () => {
     }
   };
 
-  const handleQuantidade = async (idQtd: string, value: number) => {
-    const itemAtual = lista.find((list) => list.id === idQtd);
-
-    if (!itemAtual) return;
-
-    const response = await TodoApi.updateQtd(
-      idQtd,
-      value,
-    );
-
-    if (response && response.id) {
-      setLista(
-        lista.map((qtd) =>
-          qtd.id === idQtd
-            ? { ...qtd, quantidade: qtd.quantidade + value }
-            : qtd,
-        ),
-      );
-    } else {
-      console.error("Não foi possivel editar o valor.");
-    }
-  };
   return (
     /*Estilização somente para a página*/
     <PageLayout title="TodoList">
@@ -91,11 +71,9 @@ export const Home = () => {
             id={list.id}
             nome={list.nome}
             favorito={list.favorito}
-            quantidade={list.quantidade}
             onRemove={() => handleRemove(list.id)}
             onFavorite={() => handleFavorite(list.id)}
             // Vai vir do componente filho o delta
-            onQuantidade={(delta) => handleQuantidade(list.id, delta)}
           />
         ))}
       </ol>
