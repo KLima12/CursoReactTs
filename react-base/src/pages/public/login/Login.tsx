@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import LoginStyles from "./Login.module.css";
 import { useAuthContext } from "../../../shared/contexts/AuthContext";
 import { AuthForm } from "../AuthForm";
 import { NavLink } from "react-router";
+import { Input } from "../../../shared/components/Input/Input";
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,23 +22,23 @@ export function Login() {
 
   return (
       <AuthForm title="Login" nameButton="Logar" onSubmit={handleLogin}>
-          <b className={LoginStyles.Label}>Email</b>
-          <input
-            value={email}
-            className={LoginStyles.Input}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <Input 
+            label="Email" 
+            type="email" 
+            required={true}
+            onChange={(e) => setEmail(e.target.value)} 
+            value={email} 
+            placeHolder="Digite seu Email">
+          
+          </Input>
 
-          <b className={LoginStyles.Label}>Senha</b>
-
-          <input
-            className={LoginStyles.Input}
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <Input 
+          type="password" 
+          label="Senha" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)} 
+          required={true} placeHolder="Digite sua senha">
+          </Input>
 
           <NavLink to="/register"> 
             Registre-se

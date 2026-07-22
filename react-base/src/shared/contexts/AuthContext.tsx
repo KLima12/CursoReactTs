@@ -13,6 +13,7 @@ interface IAuthContextProps {
   accessToken: string | undefined;
 
   login(email: string, password: string): void;
+  register(email: string, password: string): void;
   logout(): void;
   loading: boolean;
   refreshToken(): Promise<boolean>;
@@ -110,6 +111,25 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     }
   }, []);
 
+  const register = useCallback(async (email: string, password: string) => { 
+    try { 
+      const response = await api.post('/api/register/', { 
+        email,
+        password
+      })
+
+      const data = response.data; 
+
+      setEmail(email);
+      authService.setTokens(data.access, data.refresh);
+      setAcessToken(data.access);
+     
+    } catch(error) { 
+      alert("Erro ao registrar");
+      console.log("Erro ao registrar usuário: ", error);
+    }
+  }, []);
+
   const logout = useCallback(() => {
     authService.logout()
     setEmail(undefined);
@@ -119,7 +139,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
   return (
     <AuthContext.Provider
-      value={{ login, logout, accessToken, email, loading, refreshToken }}
+      value={{ login, logout, register,accessToken, email, loading, refreshToken }}
     >
       {children}
     </AuthContext.Provider>

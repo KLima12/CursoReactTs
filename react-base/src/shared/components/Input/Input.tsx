@@ -10,7 +10,7 @@ interface InputProps {
 }
 
 export function Input({label, type, value, required,placeHolder,onChange}: InputProps) { 
-    <>
+    return (<>
         {label && <b className={InputStyles.label}>{label}</b>}
         <input className={InputStyles.Input} 
             type={type}
@@ -20,5 +20,5 @@ export function Input({label, type, value, required,placeHolder,onChange}: Input
             onChange={onChange}
         > 
         </input>
-    </>
+    </>)
 }
