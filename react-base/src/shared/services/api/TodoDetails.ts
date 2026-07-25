@@ -2,21 +2,34 @@ import { api } from "../../api/api"
 
 export interface ItodoDetails { 
     id: string;
-    detail?: string;
+    detalhes?: string;
     concluido: boolean;
     prioridade?: string; 
 }
 
 export const TodoDetails = { 
-    async getDetail(id: string) { 
+    async getDetailByTask(id: string): Promise<ItodoDetails | undefined> { 
         try { 
-            const response = api.get(`/api/detalhes/${id}`); 
-            if (response) { 
-                const data = (await response).data;
-                return data as ItodoDetails[];
-            }
+            const response = api.get(`/api/detalhes/by_task/?todo_id=${id}`); 
+            
+            return (await response).data as ItodoDetails; // Retornando um objeto diretamente.
+            
         } catch(error) { 
             console.log("Houve um erro ao pegar usuários: ", error);
+            return undefined;
+        }
+    }, 
+
+    async PutDetail(id: string, detalhe: string, prioridade: string, concluido:boolean ) { 
+        try { 
+            const response = await api.put(`/api/detalhes/${id}/`, { 
+            detalhes: detalhe, 
+            prioridade: prioridade, 
+            concluido: concluido, 
+            });
+            return response.data;
+        } catch(error) { 
+            console.log("Deu um erro: ", error);
         }
     }
 }

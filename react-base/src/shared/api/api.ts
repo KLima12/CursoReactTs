@@ -9,6 +9,7 @@ export const api = axios.create({
 // Aqui serve para que toda vez que eu fizer talvez um api.get("alguma-coisa/") vire automaticamente um bearer Seu token
 api.interceptors.request.use((config) => { 
     const token = authService.getAccessToken();
+    console.log('🔑 Token antes da requisição:', token ? `${token.substring(0, 30)}...` : 'NÃO TEM TOKEN!');
     if (token) { 
         config.headers.Authorization = `Bearer ${token}`;
     }

@@ -2,7 +2,7 @@ import { Home } from "./pages/Home";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { AppLayout } from "./shared/layout/AppLayout";
 import { About } from "./pages/About";
-import { Detail } from "./pages/Detail";
+import { Detail } from "./pages/Details/Detail";
 import { Login } from "./pages/public/login/Login";
 import { useAuthContext, useIsAuthenticated } from "./shared/contexts/AuthContext";
 import { Register } from "./pages/public/register/Register";

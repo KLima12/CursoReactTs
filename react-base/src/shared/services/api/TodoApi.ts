@@ -19,8 +19,7 @@ export const TodoApi = {
         try { 
             const response = api.get("/api/tasks/");
 
-            const data = (await response).data;
-            console.log(data); 
+            const data = (await response).data; 
             return data as Itodo[];
         } catch(error) { 
             console.error("Erro: ", error)
