@@ -50,7 +50,7 @@ export const Home = () => {
     console.log(response);
 
     if (response && response.id) {
-      console.log("Resposta valida! Vamos atualizar!")
+      console.log("Resposta valida! Vamos atualizar!");
       setLista(
         lista.map((fav) =>
           fav.id === idFav ? { ...fav, favorito: !fav.favorito } : fav,

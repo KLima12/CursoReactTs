@@ -1,7 +1,68 @@
-.Label { 
-    text-align: center;
+/* Input/InputStyles.module.css */
+
+.InputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
 }
 
-.Input { 
-    height: 25px;
+.Label {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 14px;
+}
+
+.Required {
+  color: #e53e3e;
+  margin-left: 4px;
+}
+
+.Input {
+  padding: 10px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.25s ease;
+  background: #f7fafc;
+  outline: none;
+  width: 100%;
+}
+
+.Input:focus {
+  border-color: #667eea;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.Input::placeholder {
+  color: #a0aec0;
+}
+
+.InputError {
+  border-color: #fc8181;
+}
+
+.InputError:focus {
+  border-color: #e53e3e;
+  box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.1);
+}
+
+.ErrorMessage {
+  font-size: 13px;
+  color: #e53e3e;
+  margin-top: 2px;
+}
+
+.Input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .Input {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
 }

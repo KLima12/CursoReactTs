@@ -1,18 +1,121 @@
-.InputEnviar { 
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-}
-.input { 
-    width: 50%;
-    padding: 5px;
-    margin-left: 7px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+.InputBase {
+  display: flex;
+  gap: 10px;
+  width: 100%;
 }
 
-.enviar { 
-    border-radius: 5px;
-    cursor: pointer;
+.Input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.25s ease;
+  background: #f7fafc;
+  outline: none;
+}
+
+.Input:focus {
+  border-color: #667eea;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+}
+
+.Input::placeholder {
+  color: #a0aec0;
+}
+
+.enviar {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.enviar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.enviar:hover::before {
+  left: 100%;
+}
+
+.enviar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.45);
+}
+
+.enviar:active {
+  transform: translateY(0px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.enviar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.BtnAdd {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.BtnAdd:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+}
+
+.BtnAdd:active {
+  transform: translateY(0);
+}
+
+.BtnAdd:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .Container {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .BtnAdd {
+    width: 100%;
+    padding: 10px;
+  }
 }

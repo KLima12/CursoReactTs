@@ -18,7 +18,7 @@ export const InputAdd = ({ onAdd }: InputProps) => {
   return (
     <InputAddLayout>
       <input
-        className={InputAddLayoutStyles.input}
+        className={InputAddLayoutStyles.Input}
         value={value}
         ref={inputRef}
         onChange={(e) => setValue(e.target.value)}

@@ -1,24 +1,300 @@
-.principal {
-  border: 1px solid #ddd;
-  padding: "20px";
-  border-radius: "8px";
-}
+/* DetailStyle.module.css */
 
-.save {
-  padding: 8px 16px;
-  background-color: #4caf50;
-  color: white;
-  border: "none";
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.add {
-  cursor: pointer;
-}
-
-.formCreate {
+/* Container Principal */
+.Container {
+  width: 100%;
+  padding: 0 4px;
   display: flex;
   flex-direction: column;
+}
+
+/* Títulos e Textos */
+.Title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 20px;
+}
+
+.Subtitle {
+  font-size: 16px;
+  color: #718096;
+  margin-bottom: 12px;
+}
+
+/* Botão de Adicionar */
+.AddButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 32px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.AddButton:hover {
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.AddButton:active {
+  transform: scale(0.95);
+}
+
+/* Formulários */
+.Form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.FormGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.FormLabel {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 14px;
+}
+
+.InputField {
+  padding: 10px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.25s ease;
+  background: #f7fafc;
+  outline: none;
+  width: 100%;
+}
+
+.InputField:focus {
+  border-color: #667eea;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.SelectField {
+  padding: 10px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.25s ease;
+  background: #f7fafc;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.SelectField:focus {
+  border-color: #667eea;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+/* Botões de Ação */
+.ButtonGroup {
+  display: flex;
   gap: 10px;
+  margin-top: 8px;
+}
+
+.ButtonSave {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex: 1;
+}
+
+.ButtonSave:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.35);
+}
+
+.ButtonSave:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ButtonCancel {
+  padding: 10px 20px;
+  background: #fc8181;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.ButtonCancel:hover {
+  background: #e53e3e;
+  transform: translateY(-2px);
+}
+
+.ButtonEdit {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.ButtonEdit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(66, 153, 225, 0.35);
+}
+
+/* Cards de Informação */
+.InfoCard {
+  background: #f7fafc;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+  transition: all 0.25s ease;
+}
+
+.InfoCard:hover {
+  background: #edf2f7;
+}
+
+.InfoLabel {
+  font-weight: 600;
+  color: #4a5568;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.InfoValue {
+  font-size: 16px;
+  color: #2d3748;
+}
+
+.InfoValueEmpty {
+  color: #a0aec0;
+  font-style: italic;
+}
+
+/* Status Badge */
+.Badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.BadgeSuccess {
+  background: #c6f6d5;
+  color: #276749;
+}
+
+.BadgeDanger {
+  background: #fed7d7;
+  color: #9b2c2c;
+}
+
+/* Página de "Sem Detalhes" */
+.EmptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.EmptyStateIcon {
+  font-size: 64px;
+  color: #a0aec0;
+  margin-bottom: 16px;
+}
+
+.EmptyStateTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 8px;
+}
+
+.EmptyStateSubtitle {
+  font-size: 16px;
+  color: #718096;
+  margin-bottom: 20px;
+}
+
+.EmptyStateLink {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.EmptyStateLink:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .Title {
+    font-size: 20px;
+  }
+
+  .ButtonGroup {
+    flex-direction: column;
+  }
+
+  .ButtonSave,
+  .ButtonCancel {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .InfoCard {
+    padding: 12px 16px;
+  }
+
+  .AddButton {
+    width: 48px;
+    height: 48px;
+    font-size: 28px;
+  }
+
+  .EmptyStateTitle {
+    font-size: 18px;
+  }
+
+  .ButtonEdit {
+    width: 100%;
+  }
 }

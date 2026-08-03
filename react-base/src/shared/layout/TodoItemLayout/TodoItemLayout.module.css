@@ -1,12 +1,50 @@
-.todoBase { 
-    display: flex;
-    gap: 20px;
-    padding: 10px;
+/* TodoItemLayout.module.css */
+
+.todoBase {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 18px;
+  height: 50px;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  gap: 12px;
+  box-sizing: border-box;
 }
 
-.DivLista { 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.todoBase:hover {
+  border-color: #667eea;
+  background: #f7fafc;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(204, 208, 226, 0.15);
+}
+
+.DivLista {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  text-align: center;
+  align-items: stretch;
+  width: 100%;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .todoBase {
+    padding: 12px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .DivLista {
+    gap: 8px;
+  }
 }

@@ -1,41 +1,106 @@
-.List { 
-    border: 1px solid red;
-    justify-content: center;
-    text-align: center;
-}
-.BtnRemove { 
-    background-color: green;
-    padding: 5px;
-    cursor: pointer;
-    color: white;
-    border: 1px solid white;
+/* TodoItem/TodoItem.module.css */
+
+.List {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
-.btnFavorite { 
-    cursor: pointer;
-    background-color: white;
-    padding: 5px;
-    color: white;
+.Link {
+  flex: 1 1 0%;
+  min-width: 0;
+  color: #2d3748;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  padding: 4px 0;
+  text-overflow: ellipsis;
 }
 
-.star { 
-    cursor: pointer;
-    color: rgb(163, 163, 71);
+.LinkWrap {
+  flex: 1;
+  color: #2d3748;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  padding: 4px 0;
+  word-break: break-word; /* Quebra palavras longas */
 }
 
-.starNotFavorite { 
-    cursor: pointer;
-    color: rgb(190, 190, 98);
-    transition: all 0.2s ease;
+.Link:hover {
+  color: #667eea;
 }
 
-.star:hover {
-  color: red;
-  transform: scale(1.1);
+.ButtonsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0 /*Nao encolhe*/;
 }
 
-.starFavorite { 
-    cursor: pointer;
-    color: red;
-    transition: all 0.2s ease;
+.BtnRemove {
+  padding: 6px 14px;
+  background-color: #fc8181;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowRap;
+}
+
+.BtnRemove:hover {
+  background-color: #e53e3e;
+  transform: scale(1.05);
+}
+
+.BtnRemove:active {
+  transform: scale(0.95);
+}
+
+.Star {
+  cursor: pointer;
+  font-size: 22px;
+  transition: all 0.2s ease;
+  color: #ecc94b;
+  flex-shrink: 0;
+}
+
+.Star:hover {
+  transform: scale(1.25);
+  color: #ed8936;
+}
+
+.StarFavorite {
+  color: #f56565;
+}
+
+.StarFavorite:hover {
+  color: #e53e3e;
+  transform: scale(1.15);
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .Link {
+    font-size: 14px;
+  }
+
+  .BtnRemove {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  .Star {
+    font-size: 18px;
+  }
 }
