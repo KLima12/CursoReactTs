@@ -37,4 +37,28 @@ export const TodoDetails = {
       console.log("Deu um erro: ", error);
     }
   },
+
+  async CreateDetail(
+    id: number,
+    detalhe: string,
+    prioridade: string,
+    concluido: boolean,
+  ) {
+    console.log("Chegou aqui no CreateDetail");
+    try {
+      const response = await api.post(`/api/detalhes/`, {
+        id: id,
+        detalhes: detalhe,
+        prioridade: prioridade,
+        concluido: concluido,
+      });
+
+      if (response) {
+        console.log("response retornado: ", response.data);
+        return response.data;
+      }
+    } catch (error) {
+      console.log("Houve um erro ao criar: ", error);
+    }
+  },
 };

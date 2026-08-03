@@ -6,19 +6,21 @@ import {
   type ItodoDetails,
 } from "../../shared/services/api/TodoDetails";
 import { Input } from "../../shared/components/Input/Input";
+import { IoAddSharp } from "react-icons/io5";
 
 import DetailStyle from "./DetailStyle.module.css";
 export const Detail = () => {
   const { id } = useParams(); // Recebendo via id
   const [Listdetalhes, setListDetalhes] = useState<ItodoDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editValues, setEditValues] = useState({
-    id: 0,
+  const [isEditing, setIsEditing] = useState(false); // Estado para controlar form de edição.
+  const [isCreating, setIsCreating] = useState(true); // Estado para controlar form de criação;
+  const [formValues, setFormValues] = useState({
     detalhes: "",
-    prioridade: "",
+    prioridade: "media",
     concluido: false,
   }); // Criei para valor temporario para edição. Aqui eu posso atualizar 2,3...
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [isSaving, setIsSaving] = useState(false); // Controlar estado do button.
   const [loading, setLoading] = useState(true);
 
@@ -50,18 +52,17 @@ export const Detail = () => {
         return;
       }
       try {
-        setLoading(true);
+        setLoading(true); // Carregando...
         setError(null);
         const response = await TodoDetails.getDetailByTask(id);
         if (response) {
-          console.log(`response detalhess: ${response}`);
           setListDetalhes(response);
-          setEditValues({
-            id: Number(response.id),
+          setFormValues({
             detalhes: response.detalhes || "",
             prioridade: response.prioridade || "",
             concluido: response.concluido || false,
-          }); // Pegando valor de detalhe
+          });
+          setEditingId(Number(response.id) || null); // Passando valor do id pro EditingId (irei usar no PUT)
         }
       } catch (error) {
         console.log("Erro ao buscar detalhes dessa tarefa: ", error);
@@ -75,6 +76,14 @@ export const Detail = () => {
 
   const handleEdit = () => {
     // Ao ativado, ele vai abrir o input, o estado se tornará true.
+
+    // Carregando valores atuais.
+    setFormValues({
+      detalhes: Listdetalhes?.detalhes || "",
+      prioridade: Listdetalhes?.prioridade || "media",
+      concluido: Listdetalhes?.concluido || false,
+    });
+    setEditingId(Number(Listdetalhes?.id) || null);
     setIsEditing(true); // Ativa lá no JSX
   };
 
@@ -82,44 +91,92 @@ export const Detail = () => {
     setIsEditing(false); // Input some.
   };
 
+  const handleCreate = () => {
+    setIsCreating(false);
+    // Quando abrir formulario de criação, usar valores padrões
+    setFormValues({
+      detalhes: "",
+      prioridade: "media",
+      concluido: false,
+    });
+  };
+
+  const handleCancelCreate = () => {
+    setIsCreating(true);
+
+    // Resetando com valores padrões
+    setFormValues({
+      detalhes: "",
+      prioridade: "media",
+      concluido: false,
+    });
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
-    setEditValues((prev) => ({
+    // Os valores dos input e select sendo salvo em formValues.
+    setFormValues((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSaveEdit = async (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!Listdetalhes || !id) return;
-
+    if (!formValues.detalhes.trim()) {
+      setError("A descrição é obrigatória!");
+    }
     try {
-      setIsSaving(true); // Aqui isSaving vai ser salvando...
-      const response = await TodoDetails.PutDetail(
-        editValues.id,
-        editValues.detalhes,
-        editValues.prioridade,
-        editValues.concluido,
-      );
-      if (response) {
-        setListDetalhes({
-          ...Listdetalhes,
-          id: response.id || Listdetalhes.id,
-          detalhes: editValues.detalhes,
-          prioridade: editValues.prioridade,
-          concluido: editValues.concluido ?? editValues.concluido,
-        });
+      if (editingId) {
+        if (!Listdetalhes || !id) return;
+        setIsSaving(true); // Aqui isSaving vai ser salvando...
+        const response = await TodoDetails.PutDetail(
+          Number(editingId),
+          formValues.detalhes,
+          formValues.prioridade,
+          formValues.concluido,
+        );
+        if (response) {
+          setListDetalhes(response);
 
-        setEditValues({
-          ...editValues,
-          concluido: response.concluido ?? editValues.concluido,
-        });
+          setFormValues({
+            detalhes: response.detalhes || "",
+            prioridade: response.prioridade || "media",
+            concluido: response.concluido || false,
+          });
+          setEditingId(Number(response.id) || null);
 
-        // Quando atualizarmos, input some.
-        setIsEditing(false);
+          // Quando atualizarmos, input some.
+          setIsEditing(false);
+        }
+      } else {
+        setIsSaving(true);
+        const response = await TodoDetails.CreateDetail(
+          Number(id),
+          formValues.detalhes,
+          formValues.prioridade,
+          formValues.concluido,
+        );
+
+        if (response) {
+          setListDetalhes({
+            id: response.id,
+            detalhes: response.detalhes || formValues.detalhes,
+            prioridade: response.prioridade || formValues.prioridade,
+            concluido: response.concluido || formValues.concluido,
+          });
+
+          setEditingId(Number(response.id || null));
+          setIsCreating(false);
+          // Limpando formulário pós salvar
+          setFormValues({
+            detalhes: "",
+            prioridade: "",
+            concluido: false,
+          });
+        }
       }
     } catch (error) {
       console.log("Erro no saveEdit: ", error);
@@ -152,27 +209,96 @@ export const Detail = () => {
   if (!Listdetalhes) {
     return (
       <PageLayout title="Detalhes">
-        <div>
-          <p>Esta tarefa não possui detalhes.</p>
-          <div style={{ marginTop: "16px" }}>
-            <a href="/tasks">Voltar para lista</a>
+        {isCreating ? (
+          <div>
+            <h3>Esta tarefa não possui detalhes.</h3>
+            <h3>Clique abaixo para adicionar detalhes na tarefa</h3>
+            <div>
+              <IoAddSharp
+                onClick={() => handleCreate()}
+                className={DetailStyle.add}
+              />
+            </div>
+            <div style={{ marginTop: "16px" }}>
+              <a href="/tasks">Voltar para lista</a>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div>
+            <form onSubmit={handleSave} className={DetailStyle.formCreate}>
+              <Input
+                label="Detalhes"
+                name="detalhes"
+                required={true}
+                type="text"
+                placeHolder="Digite os detalhes da tarefa"
+                onChange={handleChange}
+                value={formValues.detalhes}
+              />
+
+              <label>
+                <strong>Prioridade:</strong>
+              </label>
+              <select
+                name="prioridade"
+                id="prioridade"
+                value={formValues.prioridade}
+                onChange={handleChange}
+              >
+                {PrioridadeArray.map((p) => (
+                  <option
+                    key={String(p.nomeBackend)}
+                    value={String(p.nomeBackend)}
+                  >
+                    {p.nomeFrontEnd}
+                  </option>
+                ))}
+              </select>
+              <label>
+                <strong>Concluido: </strong>
+              </label>
+              <select
+                name="concluido"
+                id="concluido"
+                value={String(formValues.concluido)}
+                onChange={handleChange}
+              >
+                {ConcluidoArray.map((c) => (
+                  <option
+                    key={String(c.nomeBackend)}
+                    value={String(c.nomeBackend)}
+                  >
+                    {" "}
+                    {String(c.nomeFrontEnd)}
+                  </option>
+                ))}
+              </select>
+
+              <button onClick={() => handleCancelCreate()}>Desativar</button>
+              <button
+                className={DetailStyle.save}
+                disabled={isSaving} // Ao clicado altera estado do isSaving
+              >
+                {isSaving ? "Salvando..." : "Salvar"}
+              </button>
+            </form>
+          </div>
+        )}
       </PageLayout>
     );
   }
 
   return (
-    <PageLayout title="Detalhes da tarefa">
+    <PageLayout title="Detalhes">
       {isEditing ? (
-        <form onSubmit={handleSaveEdit}>
+        <form onSubmit={handleSave}>
           <p>
             <strong>Descrição: {Listdetalhes.detalhes} </strong>
           </p>
           <Input
             type="text"
             name="detalhes"
-            value={editValues.detalhes}
+            value={formValues.detalhes}
             required={false}
             onChange={handleChange}
           />
@@ -190,7 +316,7 @@ export const Detail = () => {
           <select
             name="prioridade"
             id="prioridade"
-            value={editValues.prioridade}
+            value={formValues.prioridade}
             onChange={handleChange}
           >
             {PrioridadeArray.map((p) => (
@@ -207,7 +333,7 @@ export const Detail = () => {
           <select
             name="concluido"
             id="concluido"
-            value={String(editValues.concluido)}
+            value={String(formValues.concluido)}
             onChange={handleChange}
           >
             {ConcluidoArray.map((c) => (
@@ -232,8 +358,8 @@ export const Detail = () => {
 
           <p>
             <strong>Concluida: </strong>{" "}
-            {editValues.concluido !== undefined
-              ? editValues.concluido
+            {formValues.concluido !== undefined
+              ? formValues.concluido
                 ? "Sim"
                 : "Não"
               : Listdetalhes.concluido

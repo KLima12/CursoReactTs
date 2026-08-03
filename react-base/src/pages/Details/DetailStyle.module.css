@@ -1,14 +1,24 @@
-.principal { 
- border: 1px solid #ddd;
- padding: '20px';
- border-radius: '8px';   
+.principal {
+  border: 1px solid #ddd;
+  padding: "20px";
+  border-radius: "8px";
 }
 
-.save { 
-    padding: 8px 16px;
-    background-color: #4CAF50 ;
-    color: white;
-    border: 'none';
-    border-radius: 4px;
-    cursor: pointer;
+.save {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: "none";
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add {
+  cursor: pointer;
+}
+
+.formCreate {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
