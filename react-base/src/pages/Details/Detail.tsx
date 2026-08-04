@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PageLayout } from "../../shared/layout/pageLayout/PageLayout";
 import { useParams } from "react-router";
+import InputStyles from "../../shared/components/Input/InputStyles.module.css";
 import {
   TodoDetails,
   type ItodoDetails,
@@ -207,16 +208,16 @@ export const Detail = () => {
   if (!Listdetalhes && mode === "view") {
     return (
       <PageLayout title="Sem detalhes.">
-        <div>
+        <div className={DetailStyle.EmptyState}>
           <h3>Esta tarefa não possui detalhes.</h3>
           <h3>Clique abaixo para adicionar detalhes na tarefa</h3>
-          <div>
+          <div className={DetailStyle.EmptyStateIcon}>
             <IoAddSharp
               onClick={() => handleCreate()}
               className={DetailStyle.add}
             />
           </div>
-          <div style={{ marginTop: "16px" }}>
+          <div className={DetailStyle.EmptyStateLink}>
             <a href="/tasks">Voltar para lista</a>
           </div>
         </div>
@@ -226,43 +227,115 @@ export const Detail = () => {
 
   if (!Listdetalhes && mode === "create") {
     return (
-      <PageLayout title="detalhes - Criar">
-        <div>
-          <form onSubmit={handleSave} className={DetailStyle.formCreate}>
-            <Input
-              label="Detalhes"
-              name="detalhes"
-              required={true}
-              type="text"
-              placeHolder="Digite os detalhes da tarefa"
-              onChange={handleChange}
-              value={formValues.detalhes}
-            />
+      <PageLayout title="Detalhes - Criar">
+        <form onSubmit={handleSave} className={DetailStyle.Form}>
+          <Input
+            label="Detalhes"
+            name="detalhes"
+            required={true}
+            type="text"
+            placeHolder="Digite os detalhes da tarefa"
+            className={InputStyles.inputEdit}
+            onChange={handleChange}
+            value={formValues.detalhes}
+          />
 
-            <label>
-              <strong>Prioridade:</strong>
-            </label>
-            <select
-              name="prioridade"
-              id="prioridade"
-              value={formValues.prioridade}
-              onChange={handleChange}
-            >
-              {PrioridadeArray.map((p) => (
-                <option
-                  key={String(p.nomeBackend)}
-                  value={String(p.nomeBackend)}
-                >
-                  {p.nomeFrontEnd}
-                </option>
-              ))}
-            </select>
-            <label>
-              <strong>Concluido: </strong>
+          <label>
+            <strong>Prioridade</strong>
+          </label>
+          <select
+            name="prioridade"
+            id="prioridade"
+            value={formValues.prioridade}
+            className={DetailStyle.select}
+            onChange={handleChange}
+          >
+            {PrioridadeArray.map((p) => (
+              <option key={String(p.nomeBackend)} value={String(p.nomeBackend)}>
+                {p.nomeFrontEnd}
+              </option>
+            ))}
+          </select>
+          <div className={DetailStyle.selectGroup}>
+            <label className={DetailStyle.selectLabel}>
+              <strong>Concluido</strong>
             </label>
             <select
               name="concluido"
               id="concluido"
+              value={String(formValues.concluido)}
+              className={DetailStyle.select}
+              onChange={handleChange}
+            >
+              {ConcluidoArray.map((c) => (
+                <option
+                  key={String(c.nomeBackend)}
+                  value={String(c.nomeBackend)}
+                >
+                  {" "}
+                  {String(c.nomeFrontEnd)}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            className={DetailStyle.ButtonSave}
+            disabled={isSaving} // Ao clicado altera estado do isSaving
+          >
+            {isSaving ? "Salvando..." : "Salvar"}
+          </button>
+          <button
+            type="button"
+            onClick={() => handleCancelCreate()}
+            className={DetailStyle.ButtonCancel}
+          >
+            Cancelar
+          </button>
+        </form>
+      </PageLayout>
+    );
+  }
+
+  if (mode === "edit") {
+    return (
+      <PageLayout title="Detalhes - Editar">
+        <form onSubmit={handleSave} className={DetailStyle.Form}>
+          <p>
+            <strong>Descrição</strong>
+          </p>
+          <Input
+            type="text"
+            name="detalhes"
+            value={formValues.detalhes}
+            required={false}
+            className={InputStyles.inputEdit}
+            onChange={handleChange}
+          />
+          <p>
+            <strong>Prioridade</strong>
+          </p>
+          <select
+            name="prioridade"
+            id="prioridade"
+            value={formValues.prioridade}
+            onChange={handleChange}
+            className={DetailStyle.select}
+          >
+            {PrioridadeArray.map((p) => (
+              <option key={String(p.nomeBackend)} value={String(p.nomeBackend)}>
+                {p.nomeFrontEnd}
+              </option>
+            ))}
+          </select>
+          <div className={DetailStyle.selectGroup}>
+            <label className={DetailStyle.selectLabel}>
+              <strong>Concluido</strong>
+            </label>
+
+            <select
+              name="concluido"
+              id="concluido"
+              className={DetailStyle.select}
               value={String(formValues.concluido)}
               onChange={handleChange}
             >
@@ -276,78 +349,18 @@ export const Detail = () => {
                 </option>
               ))}
             </select>
-
-            <button type="button" onClick={() => handleCancelCreate()}>
-              Desativar
-            </button>
-            <button
-              className={DetailStyle.save}
-              disabled={isSaving} // Ao clicado altera estado do isSaving
-            >
-              {isSaving ? "Salvando..." : "Salvar"}
-            </button>
-          </form>
-        </div>
-      </PageLayout>
-    );
-  }
-
-  if (mode === "edit") {
-    return (
-      <PageLayout title="Detalhes - Editar">
-        <form onSubmit={handleSave} className={DetailStyle.formEdit}>
-          <p>
-            <strong>Descrição</strong>
-          </p>
-          <Input
-            type="text"
-            name="detalhes"
-            value={formValues.detalhes}
-            required={false}
-            onChange={handleChange}
-          />
-
+          </div>
           <button
-            className={DetailStyle.save}
+            className={DetailStyle.ButtonSave}
             disabled={isSaving} // Ao clicado altera estado do isSaving
           >
             {isSaving ? "Salvando..." : "Salvar"}
           </button>
-
-          <p>
-            <strong>Prioridade</strong>
-          </p>
-          <select
-            name="prioridade"
-            id="prioridade"
-            value={formValues.prioridade}
-            onChange={handleChange}
+          <button
+            type="button"
+            onClick={() => handleCancel()}
+            className={DetailStyle.ButtonCancel}
           >
-            {PrioridadeArray.map((p) => (
-              <option key={String(p.nomeBackend)} value={String(p.nomeBackend)}>
-                {p.nomeFrontEnd}
-              </option>
-            ))}
-          </select>
-
-          <p>
-            <strong>Concluido</strong>
-          </p>
-
-          <select
-            name="concluido"
-            id="concluido"
-            value={String(formValues.concluido)}
-            onChange={handleChange}
-          >
-            {ConcluidoArray.map((c) => (
-              <option key={String(c.nomeBackend)} value={String(c.nomeBackend)}>
-                {" "}
-                {String(c.nomeFrontEnd)}
-              </option>
-            ))}
-          </select>
-          <button type="button" onClick={() => handleCancel()}>
             Cancelar
           </button>
         </form>

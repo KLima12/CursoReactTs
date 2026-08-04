@@ -29,6 +29,10 @@
   width: 100%;
 }
 
+.inputEdit {
+  width: 95%;
+}
+
 .Input:focus {
   border-color: #667eea;
   background: #ffffff;

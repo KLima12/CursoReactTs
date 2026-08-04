@@ -8,6 +8,7 @@ interface InputProps {
   required: boolean;
   placeHolder?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
 }
 
 export function Input({
@@ -18,12 +19,13 @@ export function Input({
   placeHolder,
   name,
   onChange,
+  className = "",
 }: InputProps) {
   return (
     <>
       {label && <b className={InputStyles.label}>{label}</b>}
       <input
-        className={InputStyles.Input}
+        className={`${InputStyles.Input} ${className || ""}`}
         type={type}
         name={name}
         value={value}

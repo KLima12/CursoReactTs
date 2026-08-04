@@ -4,13 +4,7 @@ import { NavLink, useNavigate } from "react-router";
 import "./AppLayout.css";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useState } from "react";
-import {
-  FaHome,
-  FaInfoCircle,
-  FaSignOutAlt,
-  FaBars,
-  FaTimes,
-} from "react-icons/fa";
+import { FaHome, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
 
 export const AppLayout = ({ children }: React.PropsWithChildren) => {
   const { logout } = useAuthContext();
@@ -32,9 +26,7 @@ export const AppLayout = ({ children }: React.PropsWithChildren) => {
 
   return (
     <div className="layout-base">
-      {/* ✅ HEADER */}
       <header className="layout-header">
-        {/* Logo/Brand */}
         <NavLink to="/" className="layout-brand" onClick={closeMenu}>
           <span>📋</span>
           <span>TodoList</span>
@@ -58,16 +50,6 @@ export const AppLayout = ({ children }: React.PropsWithChildren) => {
             onClick={closeMenu}
           >
             <FaHome /> Home
-          </NavLink>
-
-          <NavLink
-            to="/sobre"
-            className={({ isActive }) =>
-              `layout-links ${isActive ? "active" : ""}`
-            }
-            onClick={closeMenu}
-          >
-            <FaInfoCircle /> Sobre
           </NavLink>
 
           <button className="layout-logout" onClick={handleLogout}>
