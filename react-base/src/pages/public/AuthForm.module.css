@@ -159,7 +159,6 @@
 @media (max-width: 480px) {
   .PageContainer {
     padding: 12px;
-    background: #f7fafc;
   }
 
   .PageContent {
@@ -171,7 +170,6 @@
 
   .PageContainer h1 {
     font-size: 20px;
-    color: #2d3748;
     text-shadow: none;
     margin-bottom: 12px;
   }

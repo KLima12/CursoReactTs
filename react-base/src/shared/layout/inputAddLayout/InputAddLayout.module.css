@@ -114,6 +114,10 @@
     gap: 8px;
   }
 
+  .InputBase {
+    flex-direction: column;
+  }
+
   .BtnAdd {
     width: 100%;
     padding: 10px;
