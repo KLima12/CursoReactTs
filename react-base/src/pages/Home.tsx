@@ -6,18 +6,33 @@ import { PageLayout } from "../shared/layout/pageLayout/PageLayout";
 import TodoItemLayoutStyle from "../shared/layout/TodoItemLayout/TodoItemLayout.module.css";
 export const Home = () => {
   const [lista, setLista] = useState<Itodo[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Busca os dados da api quando o componente inicia
   useEffect(() => {
     const carregarDados = async () => {
-      const response = await TodoApi.getAll();
-      if (response) {
-        setLista(response);
+      try {
+        setLoading(true); // Carregando...
+        const response = await TodoApi.getAll();
+        if (response) {
+          setLista(response);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar dados");
+      } finally {
+        setLoading(false);
       }
     };
     carregarDados();
   }, []);
 
+  if (loading) {
+    return (
+      <div>
+        <p>Carregando lista...</p>
+      </div>
+    );
+  }
   const handleAdd = async (value: string) => {
     TodoApi.addTodo({ nome: value, quantidade: 1, favorito: false }).then(
       (data) => {
